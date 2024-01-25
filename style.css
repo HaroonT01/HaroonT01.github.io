@@ -1,0 +1,180 @@
+img{
+  display: flex;
+  flex-direction: row;
+  width:200px;
+  height:200px;
+
+}
+.container {
+  flex-direction: row;
+  display: flex;
+  width: fixed;
+ margin-top: 50px;
+  justify-content: center;
+}
+.about-image{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 40px;
+}
+.about-text{
+
+  justify-content: center;
+align-items: center;
+width: 400px;
+}
+.link{
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+.about-border {
+  display: block;
+  width: auto;
+  height: 2px;
+  background:rgb(206,196,196,.25);
+  margin: 20px auto;
+
+}
+
+
+.about-vborder{
+  display: block;
+  width: 2px;
+  height: auto;
+  background:rgb(206,196,196,.25);
+  margin-right: 40px;
+}
+  .about-progress{
+  
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+
+}
+
+
+/* Reset some default styles for better consistency */
+body, h1, p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style for the overall container */
+.project-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the project title */
+h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Style for the project description */
+p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* Style for links */
+.link a {
+  margin-right: 10px;
+  text-decoration: none;
+  color: #007BFF;
+  font-weight: bold;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
+
+/* Style for the video container */
+.video-demo {
+  margin-bottom: 20px;
+}
+
+/* Style for images */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+
+
+@media only screen and (max-width: 700px) {
+  img{
+    display: flex;
+    flex-direction: row;
+    width:200px;
+    height:200px;
+  
+  }
+  .container {
+    flex-direction: column;
+    display: flex;
+    width: fixed;
+   margin-top: 50px;
+    justify-content: center;
+    align-items: center;
+  }
+  .about-image{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+  }
+  .about-text{
+  
+    justify-content: center;
+  align-items: center;
+  width: 600px;
+
+  }
+  .link{
+      display: flex;
+      justify-content: center;
+      gap: 70px;
+  }
+  a{
+    text-decoration: none;
+    color: black;
+  }
+  .about-border {
+    display: block;
+    width: auto;
+    height: 2px;
+    background:rgb(206,196,196,.25);
+    margin: 20px auto;
+  
+  }
+  .about-progress{
+    justify-content: center;
+  align-items: center;
+  
+  }
+  .about-hborder{
+    display: block;
+    width: auto;
+    height: 2px;
+    background:rgb(206,196,196,.25);
+
+  
+  }
+}
+

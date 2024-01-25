@@ -1,0 +1,39 @@
+
+const int buttonPins[] = {12, 8, 7, 2};
+const int ledPins[] = {3, 5, 6, 9};
+const int numButtons = sizeof(buttonPins) / sizeof(buttonPins[0]);
+
+int buttonPresses[4] = {-1, -1, -1, -1};
+int pressIndex = 0;
+
+void setup() {
+  for (int i = 0; i < numButtons; i++) {
+    pinMode(buttonPins[i], INPUT_PULLUP);
+    pinMode(ledPins[i], OUTPUT);
+  }
+}
+
+void loop() {
+  if (pressIndex < numButtons) {
+    for (int i = 0; i < numButtons; i++) {
+      if (digitalRead(buttonPins[i]) == LOW) {
+        if (buttonPresses[pressIndex] == -1) {
+          buttonPresses[pressIndex] = i;
+          pressIndex++;
+          delay(500);
+        }
+      }
+    }
+  } else {
+    for (int i = 0; i < numButtons; i++) {
+      digitalWrite(ledPins[buttonPresses[i]], HIGH);
+      delay(500);
+      digitalWrite(ledPins[buttonPresses[i]], LOW);
+    }
+
+    for (int i = 0; i < numButtons; i++) {
+      buttonPresses[i] = -1;
+    }
+    pressIndex = 0;
+  }
+}
