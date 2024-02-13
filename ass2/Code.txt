@@ -1,0 +1,17 @@
+const int potPin = A0;
+
+void setup() {
+  Serial.begin(9600); 
+}
+
+void loop() {
+  int potValue = analogRead(potPin); 
+  int sectionIndex = potValue / 85; 
+  
+  if (sectionIndex > 11) {
+    sectionIndex = 11;
+  }
+
+  Serial.println(sectionIndex); 
+  delay(100); 
+}
