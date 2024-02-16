@@ -1,17 +1,30 @@
-const int potPin = A0;
+const int potPin1 = A0; 
+const int potPin2 = A1; 
 
 void setup() {
   Serial.begin(9600); 
 }
 
 void loop() {
-  int potValue = analogRead(potPin); 
-  int sectionIndex = potValue / 85; 
+
+  int potValue1 = analogRead(potPin1);
+  int potValue2 = analogRead(potPin2);
+
+  int sectionIndex1 = potValue1 / 171; 
+  int sectionIndex2 = potValue2 / 171; 
   
-  if (sectionIndex > 11) {
-    sectionIndex = 11;
+
+  if (sectionIndex1 > 5) {
+    sectionIndex1 = 5;
+  }
+  if (sectionIndex2 > 5) {
+    sectionIndex2 = 5;
   }
 
-  Serial.println(sectionIndex); 
-  delay(100); 
+  Serial.print("Pot1 section: ");
+  Serial.print(sectionIndex1);
+  Serial.print(", Pot2 section: ");
+  Serial.println(sectionIndex2);
+
+  delay(100);
 }
