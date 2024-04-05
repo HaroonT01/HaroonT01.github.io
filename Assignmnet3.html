@@ -7,39 +7,69 @@
   <link rel="stylesheet" href="style.css">
   <style>
     .slider-container img {
-        width: 30%; /* Adjust as needed */
+        width: 100%; /* Adjust as needed */
         display: none; /* Hide all images initially */
     }
     .slider-container img.active {
         display: block; /* Only show the active image */
+    }
+    .slider-sections-container {
+      display: flex;
+      justify-content: space-around; /* Space out the before and after sections evenly */
+      flex-wrap: wrap; /* Enable wrapping for responsiveness */
+    }
+    .before-section, .after-section {
+      flex: 1; /* Make each section take up equal space */
+      min-width: 300px; /* Minimum width for each section */
+    }
+    @media (max-width: 768px) {
+      .slider-sections-container {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
   <div class="link">
     <a href="index.html">Home</a>
-    <a href="Assignmnet0.html">Assignment 0</a>
-    <a href="Assignmnet1.html">Assignment 1</a>
-    <a href="Assignmnet2.html">Assignment 2</a>
-    <a href="Assignmnet3.html">Assignment 3</a>
+    <a href="Assignment0.html">Assignment 0</a>
+    <a href="Assignment1.html">Assignment 1</a>
+    <a href="Assignment2.html">Assignment 2</a>
+    <a href="Assignment3.html">Assignment 3</a>
   </div>
 
   <div class="project-container">
     <h1>Wheel-a-nator 2.0</h1>
-    <p>For this project I have iterated and improved my original project. </p>
+    <p>For this project, I have iterated and improved my original project.</p>
 
-    <!-- Image slider for concept images -->
-    <h2>Before</h2>
-    <div class="slider-container">
-      <img src="Ass3/IMG_8730.jpg" alt="Concept Image 1" class="active">
-      <img src="Ass3/IMG_8715.jpg" alt="Concept Image 2">
-      <img src="Ass3/IMG_8714.jpg" alt="Concept Image 3">
-      <img src="Ass3/IMG_8725.jpg" alt="Concept Image 4">
+    <!-- Image sliders for Before and After, side by side -->
+    <div class="slider-sections-container">
+      <div class="before-section">
+        <h2>Before</h2>
+        <div class="slider-container">
+          <img src="Ass3/IMG_8730.jpg" alt="Concept Image 1" class="active">
+          <img src="Ass3/IMG_8715.jpg" alt="Concept Image 2">
+          <img src="Ass3/IMG_8714.jpg" alt="Concept Image 3">
+          <img src="Ass3/IMG_8725.jpg" alt="Concept Image 4">
+        </div>
+        <button onclick="prevImage()">Previous</button>
+        <button onclick="nextImage()">Next</button>
+      </div>
+
+      <div class="after-section">
+        <h2>After</h2>
+        <div class="slider-container">
+          <img src="Ass3/IMG_8730.jpg" alt="Concept Image 1" class="active">
+          <img src="Ass3/IMG_8715.jpg" alt="Concept Image 2">
+          <img src="Ass3/IMG_8714.jpg" alt="Concept Image 3">
+          <img src="Ass3/IMG_8725.jpg" alt="Concept Image 4">
+        </div>
+        <button onclick="prevImage()">Previous</button>
+        <button onclick="nextImage()">Next</button>
+      </div>
     </div>
-    <button onclick="prevImage()">Previous</button>
-    <button onclick="nextImage()">Next</button>
     
-    <script>
+   <script>
       let images = document.querySelectorAll('.slider-container img');
       let current = 0;
 
