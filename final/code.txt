@@ -1,0 +1,25 @@
+const int potPin1 = A0; 
+
+
+void setup() {
+  Serial.begin(9600); 
+}
+
+void loop() {
+
+  int potValue1 = analogRead(potPin1);
+
+  int sectionIndex1 = potValue1 / 171; 
+  
+
+  if (sectionIndex1 > 5) {
+    sectionIndex1 = 5;
+  }
+
+
+  Serial.print("Pot1 section: ");
+  Serial.println(sectionIndex1);
+
+
+  delay(100);
+}
