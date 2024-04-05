@@ -44,57 +44,67 @@
 
     <!-- Image sliders for Before and After, side by side -->
     <div class="slider-sections-container">
-      <div class="before-section">
-        <h2>Before</h2>
-        <div class="slider-container">
-          <img src="Ass3/IMG_8730.jpg" alt="Concept Image 1" class="active">
-          <img src="Ass3/IMG_8715.jpg" alt="Concept Image 2">
-          <img src="Ass3/IMG_8714.jpg" alt="Concept Image 3">
-          <img src="Ass3/IMG_8725.jpg" alt="Concept Image 4">
-        </div>
-        <button onclick="prevImage()">Previous</button>
-        <button onclick="nextImage()">Next</button>
-      </div>
+     <!-- Before Section -->
+<div class="before-section">
+  <h2>Before</h2>
+  <div class="slider-container">
+    <img src="Ass3/IMG_8730.jpg" alt="Concept Image 1" class="active before-image">
+    <img src="Ass3/IMG_8715.jpg" alt="Concept Image 2" class="before-image">
+    <!-- More Before images -->
+  </div>
+  <button onclick="prevImageBefore()">Previous</button>
+  <button onclick="nextImageBefore()">Next</button>
+</div>
 
-      <div class="after-section">
-        <h2>After</h2>
-        <div class="slider-container">
-          <img src="Ass3/IMG_8730.jpg" alt="Concept Image 1" class="active">
-          <img src="Ass3/IMG_8715.jpg" alt="Concept Image 2">
-          <img src="Ass3/IMG_8714.jpg" alt="Concept Image 3">
-          <img src="Ass3/IMG_8725.jpg" alt="Concept Image 4">
-        </div>
-        <button onclick="prevImage()">Previous</button>
-        <button onclick="nextImage()">Next</button>
-      </div>
+<!-- After Section -->
+<div class="after-section">
+  <h2>After</h2>
+  <div class="slider-container">
+    <img src="Ass3/IMG_8730.jpg" alt="Concept Image 1" class="active after-image">
+    <img src="Ass3/IMG_8715.jpg" alt="Concept Image 2" class="after-image">
+    <!-- More After images -->
+  </div>
+  <button onclick="prevImageAfter()">Previous</button>
+  <button onclick="nextImageAfter()">Next</button>
+</div>
+
     </div>
     
-   <script>
-      let images = document.querySelectorAll('.slider-container img');
-      let current = 0;
+  <script>
+  let currentBefore = 0;
+  let currentAfter = 0;
+  let imagesBefore = document.querySelectorAll('.before-image');
+  let imagesAfter = document.querySelectorAll('.after-image');
 
-      function showCurrentImage() {
-        images.forEach((img, idx) => {
-          img.style.display = 'none'; // Hide all images
-          img.classList.remove('active'); // Remove active class
-        });
-        images[current].style.display = 'block'; // Show current image
-        images[current].classList.add('active'); // Add active class to current image
-      }
+  function showCurrentImage(images, current) {
+    images.forEach(img => img.classList.remove('active'));
+    images[current].classList.add('active');
+  }
 
-      function nextImage() {
-        current = (current + 1) % images.length;
-        showCurrentImage();
-      }
+  function nextImageBefore() {
+    currentBefore = (currentBefore + 1) % imagesBefore.length;
+    showCurrentImage(imagesBefore, currentBefore);
+  }
 
-      function prevImage() {
-        current = (current - 1 + images.length) % images.length;
-        showCurrentImage();
-      }
-      
-      // Initially call the function to display the first image
-      showCurrentImage();
-    </script>
+  function prevImageBefore() {
+    currentBefore = (currentBefore - 1 + imagesBefore.length) % imagesBefore.length;
+    showCurrentImage(imagesBefore, currentBefore);
+  }
+
+  function nextImageAfter() {
+    currentAfter = (currentAfter + 1) % imagesAfter.length;
+    showCurrentImage(imagesAfter, currentAfter);
+  }
+
+  function prevImageAfter() {
+    currentAfter = (currentAfter - 1 + imagesAfter.length) % imagesAfter.length;
+    showCurrentImage(imagesAfter, currentAfter);
+  }
+
+  // Initially display the first image for both sliders
+  showCurrentImage(imagesBefore, currentBefore);
+  showCurrentImage(imagesAfter, currentAfter);
+</script>
 
     
 <div class="video-demo">
