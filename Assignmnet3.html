@@ -5,30 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Assignment 3</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .slider-container img {
-        width: 80%; /* Adjust as needed */
-        display: none; /* Hide all images initially */
-      height:100%;
-    }
-    .slider-container img.active {
-        display: block; /* Only show the active image */
-    }
+<style>
+  .slider-container img {
+      max-width: 100%; /* Allow width to adjust up to 100% of the container width */
+      height: 300px; /* Fixed height for the portrait box */
+      object-fit: cover; /* Cover the box, may crop the image */
+      display: none; /* Hide all images initially */
+  }
+  .slider-container img.active {
+      display: block; /* Only show the active image */
+  }
+  .slider-sections-container {
+    display: flex;
+    justify-content: space-around; /* Space out the before and after sections evenly */
+    flex-wrap: wrap; /* Enable wrapping for responsiveness */
+  }
+  .before-section, .after-section {
+    flex: 1; /* Make each section take up equal space */
+    min-width: 300px; /* Minimum width for each section */
+  }
+  @media (max-width: 768px) {
     .slider-sections-container {
-      display: flex;
-      justify-content: space-around; /* Space out the before and after sections evenly */
-      flex-wrap: wrap; /* Enable wrapping for responsiveness */
+      flex-direction: column;
     }
-    .before-section, .after-section {
-      flex: 1; /* Make each section take up equal space */
-      min-width: 300px; /* Minimum width for each section */
-    }
-    @media (max-width: 768px) {
-      .slider-sections-container {
-        flex-direction: column;
-      }
-    }
-  </style>
+  }
+</style>
+
 </head>
 <body>
   <div class="link">
@@ -130,7 +132,6 @@
   </video>
   <br>
 </div>
-
 
     
     
