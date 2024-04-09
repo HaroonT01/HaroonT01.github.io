@@ -14,6 +14,18 @@ body {
   color: white;
 }
 
+.code-box {
+  width: 100%; /* Full width of the container */
+  height: 200px; /* Fixed height with a vertical scrollbar */
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f4f4f4; /* Light grey background */
+  border: 1px solid #ccc; /* Light grey border */
+  overflow-y: scroll; /* Scrollbar for overflowing content */
+  font-family: 'Courier New', monospace; /* Monospaced font for code */
+  white-space: pre; /* Maintains spacing and formatting */
+  resize: none; /* Disables the resize handle */
+}
 
   .project-container {
     background-color: #404040; /* Slightly darker grey background */
@@ -189,7 +201,167 @@ body {
 </div>
 
     
-    
+    <div class="code-container">
+  <h2>Arduino Code:</h2>
+  <textarea readonly class="code-box">
+// Your Arduino code here...
+const int potPin1 = A0; // Potentiometer pin
+const int joyXPin = A1; // Joystick X-axis pin
+const int joyYPin = A2; // Joystick Y-axis pin
+
+// Variable to store the last section index reported for the potentiometer
+int lastSectionIndex1 = -1; // Initialize with -1 so it's different from the first reading
+// Variable to store the last reported direction for the joystick
+String lastDirection = "Neutral";
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Potentiometer reading and section determination
+  int potValue1 = analogRead(potPin1);
+  int sectionIndex1 = potValue1 / 128; // Divide by 128 to get 8 sections
+  if (sectionIndex1 > 7) {
+    sectionIndex1 = 7; // Ensure the section index doesn't exceed 7
+  }
+
+  // Update and print only if there's a change in the potentiometer section
+  if (sectionIndex1 != lastSectionIndex1) {
+    lastSectionIndex1 = sectionIndex1;
+    Serial.print("Pot1 section: ");
+    Serial.println(sectionIndex1);
+  }
+
+  // Joystick direction determination
+  int joyXValue = analogRead(joyXPin);
+  int joyYValue = analogRead(joyYPin);
+  String direction = getJoystickDirection(joyXValue, joyYValue);
+
+  if (direction != lastDirection) {
+    lastDirection = direction;
+    Serial.print("Joystick Direction: ");
+    Serial.println(direction);
+  }
+
+  delay(100); // Short delay to limit data rate
+}
+
+String getJoystickDirection(int x, int y) {
+  // Define the dead zone in the center of the joystick
+  int deadZone = 50;
+  int centerX = 512; // Center value for X when the joystick is centered
+  int centerY = 512; // Center value for Y when the joystick is centered
+
+  // Calculate the difference from the center
+  int diffX = x - centerX;
+  int diffY = y - centerY;
+
+  // Check if within the dead zone (neutral)
+  if (abs(diffX) < deadZone && abs(diffY) < deadZone) {
+    return "Neutral";
+  }
+
+  // Determine direction based on the angle
+  float angle = atan2(diffY, diffX) * 180 / PI;
+  if (angle < 0) angle += 360;
+
+  if (angle > 337.5 || angle <= 22.5) return "E";
+  if (angle > 22.5 && angle <= 67.5) return "NE";
+  if (angle > 67.5 && angle <= 112.5) return "N";
+  if (angle > 112.5 && angle <= 157.5) return "NW";
+  if (angle > 157.5 && angle <= 202.5) return "W";
+  if (angle > 202.5 && angle <= 247.5) return "SW";
+  if (angle > 247.5 && angle <= 292.5) return "S";
+  if (angle > 292.5 && angle <= 337.5) return "SE";
+
+  // Default to Neutral if no other direction is matched
+  return "Neutral";
+}
+
+  </textarea>
+
+  <h2>Python Code:</h2>
+  <textarea readonly class="code-box">
+# Your Python code here...
+import numpy as np
+import pygame
+import serial
+import threading
+
+# Initialize Pygame and mixer
+pygame.mixer.init(frequency=44100, size=-16, channels=1)
+pygame.init()
+
+# Serial port setup
+ser = serial.Serial('/dev/tty.usbmodem14201', 9600, timeout=1)
+ser.flush()
+
+# Base note frequencies for the octave
+base_note_frequencies = [261.63, 293.66, 329.63, 392.00, 440.00, 493.88]
+# Current note frequencies, starting with the base octave
+current_note_frequencies = base_note_frequencies.copy()
+
+# Global variables
+current_section_index = None
+current_octave_shift = 0  # Tracks the current octave shift based on joystick direction
+
+def adjust_octave(direction):
+    global current_note_frequencies, current_octave_shift
+    octave_shift_map = {"N": 1, "S": -1, "Neutral": 0}  # Map directions to octave shifts
+    shift = octave_shift_map.get(direction, 0)
+    if shift != current_octave_shift:
+        current_octave_shift = shift
+        if shift == 1:
+            # Shift up one octave
+            current_note_frequencies = [freq * 2 for freq in base_note_frequencies]
+        elif shift == -1:
+            # Shift down one octave
+            current_note_frequencies = [freq / 2 for freq in base_note_frequencies]
+        else:
+            # Reset to base octave
+            current_note_frequencies = base_note_frequencies.copy()
+
+def play_tone(frequency, duration=1000):
+    t = np.linspace(0, duration / 1000, int(44100 * (duration / 1000)), False)
+    tone = np.sin(frequency * t * 2 * np.pi)
+    tone = (tone * 32767).astype(np.int16)
+    sound = pygame.sndarray.make_sound(tone)
+    sound.play()
+    pygame.time.delay(duration)
+
+def read_serial():
+    global current_section_index
+    while True:
+        if ser.in_waiting > 0:
+            line = ser.readline().decode('utf-8').rstrip()
+            if line.startswith("Pot1 section: "):
+                current_section_index = int(line.split(": ")[1])
+            elif line.startswith("Joystick Direction: "):
+                direction = line.split(": ")[1]
+                adjust_octave(direction)
+
+def wait_for_space_and_play():
+    global current_section_index
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and current_section_index is not None:
+                    frequency = current_note_frequencies[current_section_index % len(current_note_frequencies)]
+                    print(f"Playing tone for section {current_section_index} at frequency {frequency} Hz.")
+                    play_tone(frequency)
+            elif event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                return
+
+threading.Thread(target=read_serial, daemon=True).start()
+wait_for_space_and_play()
+
+  </textarea>
+</div>
+
 
     <div class="arduino-code-link">
       <a href="final/code.txt" target="_blank">Link to Arduino Code</a>
